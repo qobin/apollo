@@ -59,23 +59,23 @@ function releaseModalDirective($translate, toastr, AppUtil, EventManager, Releas
                     scope.toReleaseNamespace.releaseTitle,
                     scope.releaseComment,
                     scope.isEmergencyPublish).then(
-                        function (result) {
-                            AppUtil.hideModal('#releaseModal');
-                            toastr.success($translate.instant('ReleaseModal.Published'));
+                    function (result) {
+                        AppUtil.hideModal('#releaseModal');
+                        toastr.success($translate.instant('ReleaseModal.Published'));
 
-                            scope.releaseBtnDisabled = false;
+                        scope.releaseBtnDisabled = false;
 
-                            EventManager.emit(EventManager.EventType.REFRESH_NAMESPACE,
-                                {
-                                    namespace: scope.toReleaseNamespace
-                                })
+                        EventManager.emit(EventManager.EventType.REFRESH_NAMESPACE,
+                            {
+                                namespace: scope.toReleaseNamespace
+                            })
 
-                        }, function (result) {
-                            scope.releaseBtnDisabled = false;
-                            toastr.error(AppUtil.errorMsg(result), $translate.instant('ReleaseModal.PublishFailed'));
+                    }, function (result) {
+                        scope.releaseBtnDisabled = false;
+                        toastr.error(AppUtil.errorMsg(result), $translate.instant('ReleaseModal.PublishFailed'));
 
-                        }
-                    );
+                    }
+                );
 
             }
 
@@ -88,38 +88,38 @@ function releaseModalDirective($translate, toastr, AppUtil, EventManager, Releas
                     scope.toReleaseNamespace.releaseTitle,
                     scope.releaseComment,
                     scope.isEmergencyPublish).then(
-                        function (result) {
-                            AppUtil.hideModal('#releaseModal');
-                            toastr.success($translate.instant('ReleaseModal.GrayscalePublished'));
+                    function (result) {
+                        AppUtil.hideModal('#releaseModal');
+                        toastr.success($translate.instant('ReleaseModal.GrayscalePublished'));
 
-                            scope.releaseBtnDisabled = false;
+                        scope.releaseBtnDisabled = false;
 
-                            //refresh item status
-                            scope.toReleaseNamespace.branchItems.forEach(function (item, index) {
-                                if (item.isDeleted) {
-                                    scope.toReleaseNamespace.branchItems.splice(index, 1);
-                                } else {
-                                    item.isModified = false;
-                                }
-                            });
-                            //reset namespace status
-                            scope.toReleaseNamespace.itemModifiedCnt = 0;
-                            scope.toReleaseNamespace.lockOwner = undefined;
-
-                            //check rules
-                            if (!scope.toReleaseNamespace.rules
-                                || !scope.toReleaseNamespace.rules.ruleItems
-                                || !scope.toReleaseNamespace.rules.ruleItems.length) {
-
-                                scope.toReleaseNamespace.viewType = 'rule';
-                                AppUtil.showModal('#grayReleaseWithoutRulesTips');
+                        //refresh item status
+                        scope.toReleaseNamespace.branchItems.forEach(function (item, index) {
+                            if (item.isDeleted) {
+                                scope.toReleaseNamespace.branchItems.splice(index, 1);
+                            } else {
+                                item.isModified = false;
                             }
-
-                        }, function (result) {
-                            scope.releaseBtnDisabled = false;
-                            toastr.error(AppUtil.errorMsg(result), $translate.instant('ReleaseModal.GrayscalePublishFailed'));
-
                         });
+                        //reset namespace status
+                        scope.toReleaseNamespace.itemModifiedCnt = 0;
+                        scope.toReleaseNamespace.lockOwner = undefined;
+
+                        //check rules
+                        if (!scope.toReleaseNamespace.rules
+                            || !scope.toReleaseNamespace.rules.ruleItems
+                            || !scope.toReleaseNamespace.rules.ruleItems.length) {
+
+                            scope.toReleaseNamespace.viewType = 'rule';
+                            AppUtil.showModal('#grayReleaseWithoutRulesTips');
+                        }
+
+                    }, function (result) {
+                        scope.releaseBtnDisabled = false;
+                        toastr.error(AppUtil.errorMsg(result), $translate.instant('ReleaseModal.GrayscalePublishFailed'));
+
+                    });
             }
 
             function mergeAndPublish() {

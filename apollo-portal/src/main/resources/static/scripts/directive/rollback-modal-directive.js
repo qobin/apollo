@@ -124,7 +124,7 @@ function rollbackModalDirective($translate, AppUtil, EventManager, ReleaseServic
                 ReleaseService.rollbackTo(scope.env,
                     scope.toRollbackNamespace.firstRelease.id,
                     toReleaseId
-                    )
+                )
                     .then(function (result) {
                         toastr.success($translate.instant('Rollback.RollbackSuccessfully'));
                         scope.toRollbackNamespace.rollbackBtnDisabled = false;

@@ -51,10 +51,10 @@ function AccessKeyController($scope, $location, $translate, toastr,
 
     function initEnv() {
         EnvService.find_all_envs()
-        .then(function (result) {
-            $scope.envs = result;
-            initAccessKeys();
-        });
+            .then(function (result) {
+                $scope.envs = result;
+                initAccessKeys();
+            });
     }
 
     function initAccessKeys() {
@@ -69,19 +69,19 @@ function AccessKeyController($scope, $location, $translate, toastr,
             .then(function (result) {
                 $scope.accessKeys[env] = result;
             }, function (result) {
-                toastr.error(AppUtil.errorMsg(result), $translate.instant('AccessKey.LoadError', { env }));
+                toastr.error(AppUtil.errorMsg(result), $translate.instant('AccessKey.LoadError', {env}));
             });
     }
 
     function initAdmins() {
         PermissionService.get_app_role_users($scope.pageContext.appId)
-        .then(function (result) {
-            $scope.appRoleUsers = result;
-            $scope.admins = [];
-            $scope.appRoleUsers.masterUsers.forEach(function (user) {
-                $scope.admins.push(user.userId);
+            .then(function (result) {
+                $scope.appRoleUsers = result;
+                $scope.admins = [];
+                $scope.appRoleUsers.masterUsers.forEach(function (user) {
+                    $scope.admins.push(user.userId);
+                });
             });
-        });
     }
 
     function initApplication() {

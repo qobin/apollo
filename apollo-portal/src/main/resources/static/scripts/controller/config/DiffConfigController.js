@@ -41,12 +41,12 @@ diff_item_module.controller("DiffItemController",
                         namespace.env,
                         namespace.clusterName,
                         namespace.namespaceName).then(function (result) {
-                            result.forEach(function (item) {
-                                var itemsKeyedByClusterName = $scope.itemsKeyedByKey[item.key] || {};
-                                itemsKeyedByClusterName[namespace.env + ':' + namespace.clusterName + ':' + namespace.namespaceName] = item;
-                                $scope.itemsKeyedByKey[item.key] = itemsKeyedByClusterName;
-                            });
+                        result.forEach(function (item) {
+                            var itemsKeyedByClusterName = $scope.itemsKeyedByKey[item.key] || {};
+                            itemsKeyedByClusterName[namespace.env + ':' + namespace.clusterName + ':' + namespace.namespaceName] = item;
+                            $scope.itemsKeyedByKey[item.key] = itemsKeyedByClusterName;
                         });
+                    });
                 });
                 $scope.syncItemNextStep(1);
             }
@@ -77,6 +77,7 @@ diff_item_module.controller("DiffItemController",
             ////// flow control ///////
 
             $scope.syncItemStep = 1;
+
             function syncItemNextStep(offset) {
                 $scope.syncItemStep += offset;
             }

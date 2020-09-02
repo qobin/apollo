@@ -35,8 +35,8 @@ spec:
         app: {{ $configServiceFullName }}
     spec:
       {{- with .Values.configService.imagePullSecrets }}
-        imagePullSecrets:
-          {{- toYaml . | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
         - name: volume-configmap-{{ $configServiceFullName }}
@@ -58,8 +58,8 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.configService.config.profiles | quote }}
           {{- range $key, $value := .Values.configService.env }}
-            - name: {{ $key }}
-              value: {{ $value }}
+          - name: {{ $key }}
+            value: {{ $value }}
           {{- end }}
           volumeMounts:
             - name: volume-configmap-{{ $configServiceFullName }}
@@ -79,14 +79,14 @@ spec:
           resources:
             {{- toYaml .Values.configService.resources | nindent 12 }}
     {{- with .Values.configService.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
+    nodeSelector:
+      {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.configService.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
+    affinity:
+      {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.configService.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
+    tolerations:
+      {{- toYaml . | nindent 8 }}
     {{- end }}

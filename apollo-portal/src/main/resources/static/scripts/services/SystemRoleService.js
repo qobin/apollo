@@ -1,4 +1,4 @@
-appService.service('SystemRoleService', ['$resource', '$q', 'AppUtil', function ($resource, $q,AppUtil) {
+appService.service('SystemRoleService', ['$resource', '$q', 'AppUtil', function ($resource, $q, AppUtil) {
     var system_role_service = $resource('', {}, {
         add_create_application_role: {
             method: 'POST',
@@ -23,7 +23,7 @@ appService.service('SystemRoleService', ['$resource', '$q', 'AppUtil', function 
             var finished = false;
             var d = $q.defer();
             system_role_service.add_create_application_role([
-                   userId
+                    userId
                 ],
                 function (result) {
                     finished = true;
@@ -39,7 +39,7 @@ appService.service('SystemRoleService', ['$resource', '$q', 'AppUtil', function 
             var finished = false;
             var d = $q.defer();
             system_role_service.delete_create_application_role({
-                    "userId" : userId
+                    "userId": userId
                 },
                 function (result) {
                     finished = true;

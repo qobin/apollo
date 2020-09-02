@@ -63,8 +63,10 @@
                             <apollorequiredfield></apollorequiredfield>
                             {{'Common.AppOwnerLong' | translate }}</label>
                         <div class="col-sm-6 J_ownerSelectorPanel">
-                            <apollouserselector apollo-id="'ownerSelector'"  disabled="isOpenManageAppMasterRoleLimit"></apollouserselector>
-                            <small style="color: maroon" ng-if="isOpenManageAppMasterRoleLimit">{{'App.AppOwnerTips' | translate }}</small>
+                            <apollouserselector apollo-id="'ownerSelector'"
+                                                disabled="isOpenManageAppMasterRoleLimit"></apollouserselector>
+                            <small style="color: maroon" ng-if="isOpenManageAppMasterRoleLimit">{{'App.AppOwnerTips' |
+                                translate }}</small>
                         </div>
                     </div>
 
@@ -74,7 +76,8 @@
                         </label>
                         <div class="col-sm-9 J_adminSelectorPanel">
 
-                            <apollomultipleuserselector apollo-id="'adminSelector'" ng-disabled="isOpenManageAppMasterRoleLimit"></apollomultipleuserselector>
+                            <apollomultipleuserselector apollo-id="'adminSelector'"
+                                                        ng-disabled="isOpenManageAppMasterRoleLimit"></apollomultipleuserselector>
                             <br>
                             <small>{{'App.AppAdminTips1' | translate }}</small>
                             <br>

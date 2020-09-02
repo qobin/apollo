@@ -9,13 +9,13 @@ metadata:
     {{- include "apollo.service.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.configdb.service.type }}
-{{- if eq .Values.configdb.service.type "ExternalName" }}
-  externalName: {{ required "configdb.host is required!" .Values.configdb.host }}
-{{- else }}
-  ports:
-    - protocol: TCP
-      port: {{ .Values.configdb.service.port }}
-      targetPort: {{ .Values.configdb.port }}
+  {{- if eq .Values.configdb.service.type "ExternalName" }}
+externalName: {{ required "configdb.host is required!" .Values.configdb.host }}
+  {{- else }}
+ports:
+  - protocol: TCP
+    port: {{ .Values.configdb.service.port }}
+    targetPort: {{ .Values.configdb.port }}
 ---
 kind: Endpoints
 apiVersion: v1
@@ -27,5 +27,5 @@ subsets:
     ports:
       - protocol: TCP
         port: {{ .Values.configdb.port }}
-{{- end }}
-{{- end }}
+  {{- end }}
+  {{- end }}

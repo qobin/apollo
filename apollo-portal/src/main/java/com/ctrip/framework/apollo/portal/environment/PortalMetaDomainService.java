@@ -8,6 +8,7 @@ import com.ctrip.framework.apollo.tracer.spi.Transaction;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,9 @@ import org.springframework.stereotype.Service;
  * Provider an available meta server url.
  * If there is no available meta server url for the given environment,
  * the default meta server url will be used(http://apollo.meta).
- * @see com.ctrip.framework.apollo.core.MetaDomainConsts
+ *
  * @author wxq
+ * @see com.ctrip.framework.apollo.core.MetaDomainConsts
  */
 @Service
 public class PortalMetaDomainService {
@@ -76,8 +79,8 @@ public class PortalMetaDomainService {
         if (!metaServerAddressCache.containsKey(env)) {
             // put it to cache
             metaServerAddressCache
-                .put(env, getMetaServerAddressCacheValue(portalMetaServerProviders, env)
-            );
+                    .put(env, getMetaServerAddressCacheValue(portalMetaServerProviders, env)
+                    );
         }
 
         // get from cache
@@ -88,18 +91,19 @@ public class PortalMetaDomainService {
      * Get the meta server from provider by given environment.
      * If there is no available meta server url for the given environment,
      * the default meta server url will be used(http://apollo.meta).
+     *
      * @param providers provide environment's meta server address
-     * @param env environment
-     * @return  meta server address
+     * @param env       environment
+     * @return meta server address
      */
     private String getMetaServerAddressCacheValue(
-        Collection<PortalMetaServerProvider> providers, Env env) {
+            Collection<PortalMetaServerProvider> providers, Env env) {
 
         // null value
         String metaAddress = null;
 
-        for(PortalMetaServerProvider portalMetaServerProvider : providers) {
-            if(portalMetaServerProvider.exists(env)) {
+        for (PortalMetaServerProvider portalMetaServerProvider : providers) {
+            if (portalMetaServerProvider.exists(env)) {
                 metaAddress = portalMetaServerProvider.getMetaServerAddress(env);
                 logger.info("Located meta server address [{}] for env [{}]", metaAddress, env);
                 break;
@@ -122,7 +126,7 @@ public class PortalMetaDomainService {
      * clear cache {@link this#metaServerAddressCache}
      */
     public void reload() {
-        for(PortalMetaServerProvider portalMetaServerProvider : portalMetaServerProviders) {
+        for (PortalMetaServerProvider portalMetaServerProvider : portalMetaServerProviders) {
             portalMetaServerProvider.reload();
         }
         metaServerAddressCache.clear();
@@ -131,9 +135,9 @@ public class PortalMetaDomainService {
     /**
      * Select one available meta server from the comma separated meta server addresses, e.g.
      * http://1.2.3.4:8080,http://2.3.4.5:8080
-     *
+     * <p>
      * <br />
-     *
+     * <p>
      * In production environment, we still suggest using one single domain like http://config.xxx.com(backed by software
      * load balancers like nginx) instead of multiple ip addresses
      */

@@ -17,57 +17,57 @@ import java.util.Map;
  * @author Jason Song(song_s@ctrip.com)
  */
 public class DeferredResultWrapper implements Comparable<DeferredResultWrapper> {
-  private static final ResponseEntity<List<ApolloConfigNotification>>
-      NOT_MODIFIED_RESPONSE_LIST = new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    private static final ResponseEntity<List<ApolloConfigNotification>>
+            NOT_MODIFIED_RESPONSE_LIST = new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 
-  private Map<String, String> normalizedNamespaceNameToOriginalNamespaceName;
-  private DeferredResult<ResponseEntity<List<ApolloConfigNotification>>> result;
-
-
-  public DeferredResultWrapper(long timeoutInMilli) {
-    result = new DeferredResult<>(timeoutInMilli, NOT_MODIFIED_RESPONSE_LIST);
-  }
-
-  public void recordNamespaceNameNormalizedResult(String originalNamespaceName, String normalizedNamespaceName) {
-    if (normalizedNamespaceNameToOriginalNamespaceName == null) {
-      normalizedNamespaceNameToOriginalNamespaceName = Maps.newHashMap();
-    }
-    normalizedNamespaceNameToOriginalNamespaceName.put(normalizedNamespaceName, originalNamespaceName);
-  }
+    private Map<String, String> normalizedNamespaceNameToOriginalNamespaceName;
+    private DeferredResult<ResponseEntity<List<ApolloConfigNotification>>> result;
 
 
-  public void onTimeout(Runnable timeoutCallback) {
-    result.onTimeout(timeoutCallback);
-  }
-
-  public void onCompletion(Runnable completionCallback) {
-    result.onCompletion(completionCallback);
-  }
-
-
-  public void setResult(ApolloConfigNotification notification) {
-    setResult(Lists.newArrayList(notification));
-  }
-
-  /**
-   * The namespace name is used as a key in client side, so we have to return the original one instead of the correct one
-   */
-  public void setResult(List<ApolloConfigNotification> notifications) {
-    if (normalizedNamespaceNameToOriginalNamespaceName != null) {
-      notifications.stream().filter(notification -> normalizedNamespaceNameToOriginalNamespaceName.containsKey
-          (notification.getNamespaceName())).forEach(notification -> notification.setNamespaceName(
-              normalizedNamespaceNameToOriginalNamespaceName.get(notification.getNamespaceName())));
+    public DeferredResultWrapper(long timeoutInMilli) {
+        result = new DeferredResult<>(timeoutInMilli, NOT_MODIFIED_RESPONSE_LIST);
     }
 
-    result.setResult(new ResponseEntity<>(notifications, HttpStatus.OK));
-  }
+    public void recordNamespaceNameNormalizedResult(String originalNamespaceName, String normalizedNamespaceName) {
+        if (normalizedNamespaceNameToOriginalNamespaceName == null) {
+            normalizedNamespaceNameToOriginalNamespaceName = Maps.newHashMap();
+        }
+        normalizedNamespaceNameToOriginalNamespaceName.put(normalizedNamespaceName, originalNamespaceName);
+    }
 
-  public DeferredResult<ResponseEntity<List<ApolloConfigNotification>>> getResult() {
-    return result;
-  }
 
-  @Override
-  public int compareTo(@NonNull DeferredResultWrapper deferredResultWrapper) {
-    return Integer.compare(this.hashCode(), deferredResultWrapper.hashCode());
-  }
+    public void onTimeout(Runnable timeoutCallback) {
+        result.onTimeout(timeoutCallback);
+    }
+
+    public void onCompletion(Runnable completionCallback) {
+        result.onCompletion(completionCallback);
+    }
+
+
+    public void setResult(ApolloConfigNotification notification) {
+        setResult(Lists.newArrayList(notification));
+    }
+
+    /**
+     * The namespace name is used as a key in client side, so we have to return the original one instead of the correct one
+     */
+    public void setResult(List<ApolloConfigNotification> notifications) {
+        if (normalizedNamespaceNameToOriginalNamespaceName != null) {
+            notifications.stream().filter(notification -> normalizedNamespaceNameToOriginalNamespaceName.containsKey
+                    (notification.getNamespaceName())).forEach(notification -> notification.setNamespaceName(
+                    normalizedNamespaceNameToOriginalNamespaceName.get(notification.getNamespaceName())));
+        }
+
+        result.setResult(new ResponseEntity<>(notifications, HttpStatus.OK));
+    }
+
+    public DeferredResult<ResponseEntity<List<ApolloConfigNotification>>> getResult() {
+        return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull DeferredResultWrapper deferredResultWrapper) {
+        return Integer.compare(this.hashCode(), deferredResultWrapper.hashCode());
+    }
 }

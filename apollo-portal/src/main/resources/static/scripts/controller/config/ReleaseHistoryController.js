@@ -4,7 +4,7 @@ release_history_module.controller("ReleaseHistoryController",
     ]);
 
 function releaseHistoryController($scope, $location, $translate, AppUtil, EventManager,
-    ReleaseService, ConfigService, PermissionService, ReleaseHistoryService) {
+                                  ReleaseService, ConfigService, PermissionService, ReleaseHistoryService) {
 
     var params = AppUtil.parseParams($location.$$url);
     $scope.pageContext = {
@@ -52,11 +52,14 @@ function releaseHistoryController($scope, $location, $translate, AppUtil, EventM
     }
 
     function preRollback() {
-        EventManager.emit(EventManager.EventType.PRE_ROLLBACK_NAMESPACE, { namespace: $scope.namespace, toReleaseId: selectedReleaseId });
+        EventManager.emit(EventManager.EventType.PRE_ROLLBACK_NAMESPACE, {
+            namespace: $scope.namespace,
+            toReleaseId: selectedReleaseId
+        });
     }
 
     function rollback() {
-        EventManager.emit(EventManager.EventType.ROLLBACK_NAMESPACE, { toReleaseId: selectedReleaseId });
+        EventManager.emit(EventManager.EventType.ROLLBACK_NAMESPACE, {toReleaseId: selectedReleaseId});
     }
 
     function findReleaseHistory() {

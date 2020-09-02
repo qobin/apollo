@@ -13,36 +13,36 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AccessKeyServiceTest extends AbstractIntegrationTest {
 
-  @Autowired
-  private AccessKeyService accessKeyService;
+    @Autowired
+    private AccessKeyService accessKeyService;
 
-  @Test
-  public void testCreate() {
-    String appId = "someAppId";
-    String secret = "someSecret";
-    AccessKey entity = assembleAccessKey(appId, secret);
+    @Test
+    public void testCreate() {
+        String appId = "someAppId";
+        String secret = "someSecret";
+        AccessKey entity = assembleAccessKey(appId, secret);
 
-    AccessKey accessKey = accessKeyService.create(appId, entity);
+        AccessKey accessKey = accessKeyService.create(appId, entity);
 
-    assertNotNull(accessKey);
-  }
-
-  @Test(expected = BadRequestException.class)
-  public void testCreateWithException() {
-    String appId = "someAppId";
-    String secret = "someSecret";
-    int maxCount = 5;
-
-    for (int i = 0; i <= maxCount; i++) {
-      AccessKey entity = assembleAccessKey(appId, secret);
-      accessKeyService.create(appId, entity);
+        assertNotNull(accessKey);
     }
-  }
 
-  private AccessKey assembleAccessKey(String appId, String secret) {
-    AccessKey accessKey = new AccessKey();
-    accessKey.setAppId(appId);
-    accessKey.setSecret(secret);
-    return accessKey;
-  }
+    @Test(expected = BadRequestException.class)
+    public void testCreateWithException() {
+        String appId = "someAppId";
+        String secret = "someSecret";
+        int maxCount = 5;
+
+        for (int i = 0; i <= maxCount; i++) {
+            AccessKey entity = assembleAccessKey(appId, secret);
+            accessKeyService.create(appId, entity);
+        }
+    }
+
+    private AccessKey assembleAccessKey(String appId, String secret) {
+        AccessKey accessKey = new AccessKey();
+        accessKey.setAppId(appId);
+        accessKey.setSecret(secret);
+        return accessKey;
+    }
 }

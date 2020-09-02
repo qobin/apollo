@@ -13,14 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author wxq
  */
 public class Env {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(Env.class);
 
     // name of environment, cannot be null
     private final String name;
 
     // use to cache Env
-    private static final Map<String, Env> STRING_ENV_MAP = new ConcurrentHashMap<>();;
+    private static final Map<String, Env> STRING_ENV_MAP = new ConcurrentHashMap<>();
+    ;
 
     // default environments
     public static final Env LOCAL = addEnvironment("LOCAL");
@@ -35,6 +36,7 @@ public class Env {
 
     /**
      * Cannot create by other
+     *
      * @param name
      */
     private Env(String name) {
@@ -44,6 +46,7 @@ public class Env {
     /**
      * add some change to environment name
      * trim and to upper
+     *
      * @param environmentName
      * @return
      */
@@ -53,12 +56,13 @@ public class Env {
 
     /**
      * logic same as
-     * @see com.ctrip.framework.apollo.core.enums.EnvUtils transformEnv
+     *
      * @param envName
      * @return
+     * @see com.ctrip.framework.apollo.core.enums.EnvUtils transformEnv
      */
     public static Env transformEnv(String envName) {
-        if(Env.exists(envName)) {
+        if (Env.exists(envName)) {
             return Env.valueOf(envName);
         }
         if (StringUtils.isBlank(envName)) {
@@ -85,9 +89,10 @@ public class Env {
                 return Env.UNKNOWN;
         }
     }
-    
+
     /**
      * a environment name exist or not
+     *
      * @param name
      * @return
      */
@@ -98,6 +103,7 @@ public class Env {
 
     /**
      * add an environment
+     *
      * @param name
      * @return
      */
@@ -107,7 +113,7 @@ public class Env {
         }
 
         name = getWellFormName(name);
-        if(STRING_ENV_MAP.containsKey(name)) {
+        if (STRING_ENV_MAP.containsKey(name)) {
             // has been existed
             logger.debug("{} already exists.", name);
         } else {
@@ -122,12 +128,12 @@ public class Env {
      * But what would happened if environment not exist?
      *
      * @param name
-     * @throws IllegalArgumentException if this existed environment has no Env with the specified name
      * @return
+     * @throws IllegalArgumentException if this existed environment has no Env with the specified name
      */
     public static Env valueOf(String name) {
         name = getWellFormName(name);
-        if(exists(name)) {
+        if (exists(name)) {
             return STRING_ENV_MAP.get(name);
         } else {
             throw new IllegalArgumentException(name + " not exist");
@@ -136,6 +142,7 @@ public class Env {
 
     /**
      * Please use {@code Env.valueOf} instead this method
+     *
      * @param env
      * @return
      */
@@ -150,16 +157,17 @@ public class Env {
      * Not just name in Env,
      * the address of Env must be same,
      * or it will throw {@code RuntimeException}
+     *
      * @param o
-     * @throws RuntimeException When same name but different address
      * @return
+     * @throws RuntimeException When same name but different address
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Env env = (Env) o;
-        if(getName().equals(env.getName())) {
+        if (getName().equals(env.getName())) {
             throw new RuntimeException(getName() + " is same environment name, but their Env not same");
         } else {
             return false;
@@ -173,6 +181,7 @@ public class Env {
 
     /**
      * a Env convert to string, ie its name.
+     *
      * @return
      */
     @Override
@@ -182,6 +191,7 @@ public class Env {
 
     /**
      * Backward compatibility with enum's name method
+     *
      * @return
      */
     @Deprecated
@@ -195,13 +205,14 @@ public class Env {
 
     /**
      * conversion key from {@link String} to {@link Env}
+     *
      * @param metaServerAddresses key is environment, value is environment's meta server address
      * @return relationship between {@link Env} and meta server address
      */
     static Map<Env, String> transformToEnvMap(Map<String, String> metaServerAddresses) {
         // add to domain
         Map<Env, String> map = new ConcurrentHashMap<>();
-        for(Map.Entry<String, String> entry : metaServerAddresses.entrySet()) {
+        for (Map.Entry<String, String> entry : metaServerAddresses.entrySet()) {
             // add new environment
             Env env = Env.addEnvironment(entry.getKey());
             // get meta server address value

@@ -21,37 +21,37 @@ import com.ctrip.framework.apollo.portal.environment.Env;
 @Component
 public class ConfigReleaseWebhookNotifier {
 
-  private static final Logger logger = LoggerFactory.getLogger(ConfigReleaseWebhookNotifier.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigReleaseWebhookNotifier.class);
 
-  private final RestTemplateFactory restTemplateFactory;
+    private final RestTemplateFactory restTemplateFactory;
 
-  private RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-  public ConfigReleaseWebhookNotifier(RestTemplateFactory restTemplateFactory) {
-    this.restTemplateFactory = restTemplateFactory;
-  }
-
-  @PostConstruct
-  public void init() {
-    // init restTemplate
-    restTemplate = restTemplateFactory.getObject();
-  }
-
-  public void notify(String[] webHookUrls, Env env, ReleaseHistoryBO releaseHistory) {
-    if (webHookUrls == null) {
-      return;
+    public ConfigReleaseWebhookNotifier(RestTemplateFactory restTemplateFactory) {
+        this.restTemplateFactory = restTemplateFactory;
     }
 
-    for (String webHookUrl : webHookUrls) {
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-      HttpEntity entity = new HttpEntity(releaseHistory, headers);
-      String url = webHookUrl + "?env={env}";
-      try {
-        restTemplate.postForObject(url, entity, String.class, env);
-      } catch (Exception e) {
-        logger.error("Notify webHook server failed. webHook server url:{}", env, url, e);
-      }
+    @PostConstruct
+    public void init() {
+        // init restTemplate
+        restTemplate = restTemplateFactory.getObject();
     }
-  }
+
+    public void notify(String[] webHookUrls, Env env, ReleaseHistoryBO releaseHistory) {
+        if (webHookUrls == null) {
+            return;
+        }
+
+        for (String webHookUrl : webHookUrls) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            HttpEntity entity = new HttpEntity(releaseHistory, headers);
+            String url = webHookUrl + "?env={env}";
+            try {
+                restTemplate.postForObject(url, entity, String.class, env);
+            } catch (Exception e) {
+                logger.error("Notify webHook server failed. webHook server url:{}", env, url, e);
+            }
+        }
+    }
 }

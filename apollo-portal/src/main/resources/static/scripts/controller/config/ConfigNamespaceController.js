@@ -4,7 +4,7 @@ application_module.controller("ConfigNamespaceController",
         controller]);
 
 function controller($rootScope, $scope, $translate, toastr, AppUtil, EventManager, ConfigService,
-    PermissionService, UserService, NamespaceBranchService, NamespaceService) {
+                    PermissionService, UserService, NamespaceBranchService, NamespaceService) {
 
     $scope.rollback = rollback;
     $scope.preDeleteItem = preDeleteItem;
@@ -30,6 +30,7 @@ function controller($rootScope, $scope, $translate, toastr, AppUtil, EventManage
         initUser();
         initPublishInfo();
     }
+
     function initRole() {
         PermissionService.get_app_role_users($rootScope.pageContext.appId)
             .then(function (result) {
@@ -104,15 +105,15 @@ function controller($rootScope, $scope, $translate, toastr, AppUtil, EventManage
         ConfigService.load_all_namespaces($rootScope.pageContext.appId,
             $rootScope.pageContext.env,
             $rootScope.pageContext.clusterName).then(
-                function (result) {
+            function (result) {
 
-                    $scope.namespaces = result;
-                    $('.config-item-container').removeClass('hide');
+                $scope.namespaces = result;
+                $('.config-item-container').removeClass('hide');
 
-                    initPublishInfo();
-                }, function (result) {
-                    toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.LoadingAllNamespaceError'));
-                });
+                initPublishInfo();
+            }, function (result) {
+                toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.LoadingAllNamespaceError'));
+            });
     }
 
     function refreshSingleNamespace(namespace) {
@@ -124,22 +125,22 @@ function controller($rootScope, $scope, $translate, toastr, AppUtil, EventManage
             $rootScope.pageContext.env,
             $rootScope.pageContext.clusterName,
             namespace.baseInfo.namespaceName).then(
-                function (result) {
+            function (result) {
 
-                    $scope.namespaces.forEach(function (namespace, index) {
-                        if (namespace.baseInfo.namespaceName == result.baseInfo.namespaceName) {
-                            result.showNamespaceBody = true;
-                            result.initialized = true;
-                            result.show = namespace.show;
-                            $scope.namespaces[index] = result;
-                        }
-                    });
-
-                    initPublishInfo();
-
-                }, function (result) {
-                    toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.LoadingAllNamespaceError'));
+                $scope.namespaces.forEach(function (namespace, index) {
+                    if (namespace.baseInfo.namespaceName == result.baseInfo.namespaceName) {
+                        result.showNamespaceBody = true;
+                        result.initialized = true;
+                        result.show = namespace.show;
+                        $scope.namespaces[index] = result;
+                    }
                 });
+
+                initPublishInfo();
+
+            }, function (result) {
+                toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.LoadingAllNamespaceError'));
+            });
     }
 
     function rollback() {
@@ -171,15 +172,15 @@ function controller($rootScope, $scope, $translate, toastr, AppUtil, EventManage
             $scope.toOperationNamespace.baseInfo.clusterName,
             $scope.toOperationNamespace.baseInfo.namespaceName,
             toDeleteItemId).then(
-                function (result) {
-                    toastr.success($translate.instant('Config.Deleted'));
-                    EventManager.emit(EventManager.EventType.REFRESH_NAMESPACE,
-                        {
-                            namespace: $scope.toOperationNamespace
-                        });
-                }, function (result) {
-                    toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.DeleteFailed'));
-                });
+            function (result) {
+                toastr.success($translate.instant('Config.Deleted'));
+                EventManager.emit(EventManager.EventType.REFRESH_NAMESPACE,
+                    {
+                        namespace: $scope.toOperationNamespace
+                    });
+            }, function (result) {
+                toastr.error(AppUtil.errorMsg(result), $translate.instant('Config.DeleteFailed'));
+            });
     }
 
     function preRevokeItem(namespace) {
