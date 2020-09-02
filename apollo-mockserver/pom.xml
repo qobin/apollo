@@ -5,7 +5,8 @@
   <parent>
     <artifactId>apollo</artifactId>
     <groupId>com.ctrip.framework.apollo</groupId>
-    <version>${revision}</version>
+    <version>1.8.0-SNAPSHOT</version>
+<!--    <version>${revision}</version>-->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

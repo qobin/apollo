@@ -5,79 +5,20 @@
 
 	<groupId>com.ctrip.framework.apollo</groupId>
 	<artifactId>apollo</artifactId>
-	<version>${revision}</version>
+<!--	<version>${revision}</version>-->
+	<version>1.8.0-SNAPSHOT</version>
 	<name>Apollo</name>
 	<packaging>pom</packaging>
 	<description>Ctrip Configuration Center</description>
-	<url>https://github.com/ctripcorp/apollo</url>
-
-	<organization>
-		<name>Ctrip, Inc.</name>
-		<url>http://www.ctrip.com</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-		</license>
-	</licenses>
-
-	<scm>
-		<url>https://github.com/ctripcorp/apollo</url>
-		<connection>scm:git:git://github.com/ctripcorp/apollo.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/ctripcorp/apollo.git</developerConnection>
-	</scm>
-
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/ctripcorp/apollo</url>
-	</ciManagement>
-
-	<issueManagement>
-		<system>github</system>
-		<url>https://github.com/ctripcorp/apollo/issues</url>
-	</issueManagement>
-
-	<developers>
-		<developer>
-			<id>nobodyiam</id>
-			<name>Jason(Shun) Song</name>
-			<email>nobodyiam at gmail.com</email>
-			<organization>Ctrip, Inc.</organization>
-			<organizationUrl>http://www.ctrip.com</organizationUrl>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>lepdou</id>
-			<name>Le Zhang</name>
-			<email>lepdou at gmail.com</email>
-			<organization>Ctrip, Inc.</organization>
-			<organizationUrl>http://www.ctrip.com</organizationUrl>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>yiming187</id>
-			<name>Billy(Yiming) Liu</name>
-			<email>liuyiming.vip at gmail.com</email>
-			<organization>Ctrip, Inc.</organization>
-			<organizationUrl>http://www.ctrip.com</organizationUrl>
-			<roles>
-				<role>Developer(Inactive)</role>
-			</roles>
-		</developer>
-	</developers>
 
 	<properties>
-		<revision>1.8.0-SNAPSHOT</revision>
+<!--		<revision>1.8.0-SNAPSHOT</revision>-->
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<platform-bom.version>Cairo-SR4</platform-bom.version>
-		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+
+		<spring.version>5.1.5.RELEASE</spring.version>
+		<spring-boot.version>2.1.3.RELEASE</spring-boot.version>
 		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
         <jaxb.version>2.3.0</jaxb.version>
         <javax.activation.version>1.1.1</javax.activation.version>
@@ -92,9 +33,6 @@
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-		<!-- for travis usage -->
-		<github.global.server>github</github.global.server>
-		<github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
 	</properties>
 
 	<modules>
@@ -315,6 +253,12 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-ldap</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
 			<!-- ctrip modified -->
 			<!-- removed duplicated javax/persistence classes -->
 			<dependency>
@@ -483,29 +427,6 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>findbugs-maven-plugin</artifactId>
-					<version>3.0.3</version>
-					<configuration>
-						<xmlOutput>true</xmlOutput>
-						<effort>Max</effort>
-						<threshold>Low</threshold>
-						<failOnError>false</failOnError>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>cobertura-maven-plugin</artifactId>
-					<version>2.7</version>
-					<dependencies>
-						<dependency>
-							<groupId>ch.qos.logback</groupId>
-							<artifactId>logback-classic</artifactId>
-							<version>1.1.7</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.6</version>
@@ -548,10 +469,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
@@ -564,24 +481,6 @@
 							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifest>
 					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>2.2.6</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<verbose>true</verbose>
-					<dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
-					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<failOnNoGitDirectory>false</failOnNoGitDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -657,46 +556,6 @@
 					<value>true</value>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<version>0.12</version>
-						<configuration>
-							<message>Site for ${project.artifactId}, ${project.version}</message>
-							<path>${github.path}</path>
-							<merge>true</merge>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>site</goal>
-								</goals>
-								<phase>site</phase>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.8.3</version>
-						<executions>
-							<execution>
-								<id>prepare-agent</id>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.eluder.coveralls</groupId>
-						<artifactId>coveralls-maven-plugin</artifactId>
-						<version>4.2.0</version>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<!-- for open source usage -->
@@ -793,26 +652,6 @@
 					<!-- end of eureka -->
 				</dependencies>
 			</dependencyManagement>
-			<dependencies>
-				<dependency>
-					<groupId>com.ctrip.3rdparty.tomcat.embed</groupId>
-					<artifactId>tomcat-embed-core</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<!-- for ctrip development with logging capability -->
-			<id>ctrip-logging</id>
-            <dependencies>
-				<dependency>
-					<groupId>com.dianping.cat</groupId>
-					<artifactId>cat-client</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>com.ctrip.framework.clogging</groupId>
-					<artifactId>clogging-agent</artifactId>
-				</dependency>
-			</dependencies>
 		</profile>
 		<profile>
 			<!-- for ctrip production -->
@@ -899,149 +738,45 @@
 					<!-- end of eureka -->
 				</dependencies>
 			</dependencyManagement>
-			<dependencies>
-				<dependency>
-					<groupId>com.dianping.cat</groupId>
-					<artifactId>cat-client</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>com.ctrip.3rdparty.tomcat.embed</groupId>
-					<artifactId>tomcat-embed-core</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>com.ctrip.framework.clogging</groupId>
-					<artifactId>clogging-agent</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>com.ctrip.platform</groupId>
-					<artifactId>ctrip-dal-client</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>configdb</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.flywaydb</groupId>
-						<artifactId>flyway-maven-plugin</artifactId>
-						<version>5.2.4</version>
-						<dependencies>
-							<dependency>
-								<groupId>mysql</groupId>
-								<artifactId>mysql-connector-java</artifactId>
-								<version>8.0.16</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<configFile>scripts/flyway/flyway-configdb.properties</configFile>
-						</configuration>
-						<inherited>false</inherited>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>portaldb</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.flywaydb</groupId>
-						<artifactId>flyway-maven-plugin</artifactId>
-						<version>5.2.4</version>
-						<dependencies>
-							<dependency>
-								<groupId>mysql</groupId>
-								<artifactId>mysql-connector-java</artifactId>
-								<version>8.0.16</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<configFile>scripts/flyway/flyway-portaldb.properties</configFile>
-						</configuration>
-						<inherited>false</inherited>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.9</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>index</report>
-							<report>summary</report>
-							<report>dependency-info</report>
-							<report>project-team</report>
-							<report>scm</report>
-							<report>issue-tracking</report>
-							<report>mailing-list</report>
-							<!-- <report>dependency-management</report> -->
-							<!-- <report>dependencies</report> -->
-							<!-- <report>dependency-convergence</report> -->
-							<report>cim</report>
-							<report>plugin-management</report>
-							<report>plugins</report>
-							<report>distribution-management</report>
-							<report>license</report>
-							<report>modules</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-					<configLocation>google_checks.xml</configLocation>
-					<headerLocation>LICENSE-2.0.txt</headerLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.6</version>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.3</version>
-			</plugin>
-		</plugins>
-	</reporting>
+	<repositories>
+		<repository>
+			<id>nexus3</id>
+			<name>nexus3</name>
+			<url>http://47.99.77.159:8081/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus3</id>
+			<name>Nexus</name>
+			<url>http://47.99.77.159:8081/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 	<distributionManagement>
 		<repository>
-			<id>releases</id>
-			<url>${releases.repo}</url>
+			<id>nexus3</id>
+			<name>Nexus</name>
+			<url>http://47.99.77.159:8081/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots</id>
-			<url>${snapshots.repo}</url>
+			<id>nexus3</id>
+			<name>Nexus</name>
+			<url>http://47.99.77.159:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
