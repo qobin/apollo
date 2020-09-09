@@ -77,8 +77,7 @@ public class AuthConfiguration {
         @Bean
         public ServletListenerRegistrationBean redisAppSettingListner() {
             ServletListenerRegistrationBean redisAppSettingListener = new ServletListenerRegistrationBean();
-            redisAppSettingListener
-                    .setListener(listener("org.jasig.cas.client.credis.CRedisAppSettingListner"));
+            redisAppSettingListener.setListener(listener("org.jasig.cas.client.credis.CRedisAppSettingListner"));
             return redisAppSettingListener;
         }
 
